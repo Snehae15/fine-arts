@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "655896667420",
+    "firebase_url": "https://finearts-b3f72-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "finearts-b3f72",
+    "storage_bucket": "finearts-b3f72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655896667420:android:c3c52747e0b3e28454c6d9",
+        "android_client_info": {
+          "package_name": "com.example.fine_arts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNuSnJw7LGU9g85hXSDHhKzlDeuM0lfHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
