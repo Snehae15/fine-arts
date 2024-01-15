@@ -163,6 +163,10 @@ class _AppealDetailsState extends State<AppealDetails> {
                                   builder: (context) => UpdateResult(
                                     eventId: widget.eventId,
                                     appealId: widget.appealId,
+                                    eventName: eventDetails['name'] ?? '',
+                                    videoLink: appealDetails['videoLink'] ?? '',
+                                    description:
+                                        appealDetails['description'] ?? '',
                                   ),
                                 ),
                               );

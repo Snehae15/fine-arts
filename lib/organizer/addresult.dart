@@ -90,7 +90,7 @@ class _AddResultState extends State<AddResult> {
               .set({
             'resultId': resultId,
             'org_id': organiserId,
-            'eventId': eventId, // Add the eventId to the result document
+            'eventId': eventId,
             'image_url': imageUrl,
           });
 

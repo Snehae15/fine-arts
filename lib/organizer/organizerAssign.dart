@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fine_arts/organizer/EditEvent.dart';
 import 'package:fine_arts/organizer/appealview.dart';
 import 'package:fine_arts/organizer/eventOrganizer.dart';
+import 'package:fine_arts/organizer/organizerprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,36 +16,48 @@ class OrgAssign extends StatefulWidget {
 
 class _OrgAssignState extends State<OrgAssign> with TickerProviderStateMixin {
   List<Map<String, dynamic>> eventsData = [];
+  bool _mounted = false;
 
   @override
   void initState() {
     super.initState();
+    _mounted = true;
     fetchData();
+  }
+
+  @override
+  void dispose() {
+    _mounted = false;
+    super.dispose();
   }
 
   Future<void> fetchData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String organizerId = prefs.getString('organizerDocId') ?? '';
 
-    if (organizerId.isNotEmpty) {
-      var querySnapshot = await FirebaseFirestore.instance
-          .collection('events')
-          .where('organiserId', isEqualTo: organizerId)
-          .get();
+    if (_mounted && organizerId.isNotEmpty) {
+      try {
+        var querySnapshot = await FirebaseFirestore.instance
+            .collection('events')
+            .where('organiserId', isEqualTo: organizerId)
+            .get();
 
-      var eventData = querySnapshot.docs;
+        var eventData = querySnapshot.docs;
 
-      if (eventData.isNotEmpty) {
-        setState(() {
-          eventsData = eventData.map((doc) {
-            var data = doc.data() as Map<String, dynamic>;
-            data['docId'] = doc.id;
-            return data;
-          }).toList();
-          print(eventsData);
-        });
-      } else {
-        print('No events found for organizer: $organizerId');
+        if (_mounted && eventData.isNotEmpty) {
+          setState(() {
+            eventsData = eventData.map((doc) {
+              var data = doc.data() as Map<String, dynamic>;
+              data['docId'] = doc.id;
+              return data;
+            }).toList();
+            print(eventsData);
+          });
+        } else {
+          print('No events found for organizer: $organizerId');
+        }
+      } catch (e) {
+        print('Error fetching results: $e');
       }
     } else {
       print('Organizer ID is empty');
@@ -54,7 +67,7 @@ class _OrgAssignState extends State<OrgAssign> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       initialIndex: 0,
       child: Scaffold(
         body: SafeArea(
@@ -67,6 +80,7 @@ class _OrgAssignState extends State<OrgAssign> with TickerProviderStateMixin {
                     customContainer(),
                     OrgEvent(),
                     AppealsView(),
+                    OrganizerProfile()
                   ],
                 ),
               ),
@@ -130,6 +144,20 @@ class _OrgAssignState extends State<OrgAssign> with TickerProviderStateMixin {
                       child: Center(
                         child: Text(
                           'Appeal',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w700,
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      child: Center(
+                        child: Text(
+                          'Profile',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15.sp,
